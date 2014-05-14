@@ -16,6 +16,8 @@ class CLIGraph(object):
         self.num_plots_x = kwargs.get('num_plots_x', 1)
         self.num_plots_y = kwargs.get('num_plots_y', 1)
 
+        # Is there a better way to do this? Subclasses may also want this kind of
+        # functionality and it could rapidly get unweidly.
         self.arg_defaults = {}
         self.arg_defaults['grid'] = kwargs.get('grid_default_on', False)
         self.gs_bottom = self.gs_left = 0
@@ -33,12 +35,7 @@ class CLIGraph(object):
         parser.add_argument("--x-label", help="Label on the x axis", default="")
         parser.add_argument("--y-label", help="Label on the y axis", default="")
 
-        if self.arg_defaults['grid']:
-            parser.add_argument(
-                "--no-grid", help="Disable the grid", action='store_false', dest='grid')
-        else:
-            parser.add_argument("--grid", help="Enable the grid", action='store_true')
-
+        self.add_variable_option(parser, 'grid', self.arg_defaults['grid'], 'the grid')
         # Output Options
         parser.add_argument('-q', '--quiet', help='Do not display a graph. When envoked with -q, the \
             agg backend will be used so no SCREEN is needed', action='store_true', default=False)
@@ -52,6 +49,21 @@ class CLIGraph(object):
                             type=float, default=1)
 
         return parser
+
+    def add_variable_option(self, parser, name, enabled, help_text):
+        """
+        Add a toggle option to the argument parser where the initial state is
+        determined by 'enabled'. If enabled, an option to turn off the option is
+        provided instead with a --no- prefix. Underscores in option names are
+        translated to dashes
+        """
+        option_name = name.replace('_', '-')
+        if enabled:
+            parser.add_argument('--no-' + option_name, help='Disable ' + help_text,
+                                action='store_false', dest=name)
+        else:
+            parser.add_argument('--' + option_name, help="Enable " + help_text,
+                                action='store_true')
 
     def check_args(self, cli_args, inputs):
         """
