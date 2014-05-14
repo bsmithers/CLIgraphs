@@ -117,15 +117,15 @@ class CLIGraph(object):
         if cli_args.grid:
             axes.grid()
 
-        if args.min_x is not None:
-            ax.set_xlim(left=args.min_x)
-        if args.max_x is not None:
-            ax.set_xlim(right=args.max_x)
+        if cli_args.min_x is not None:
+            axes.set_xlim(left=cli_args.min_x)
+        if cli_args.max_x is not None:
+            axes.set_xlim(right=cli_args.max_x)
 
-        if args.min_y is not None:
-            ax.set_ylim(bottom=args.min_y)
-        if args.max_y is not None:
-            ax.set_ylim(top=args.max_y)
+        if cli_args.min_y is not None:
+            axes.set_ylim(bottom=cli_args.min_y)
+        if cli_args.max_y is not None:
+            axes.set_ylim(top=cli_args.max_y)
 
     def create_figure(self, cli_args):
         """
