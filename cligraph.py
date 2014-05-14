@@ -35,6 +35,15 @@ class CLIGraph(object):
         parser.add_argument("--x-label", help="Label on the x axis", default="")
         parser.add_argument("--y-label", help="Label on the y axis", default="")
 
+        parser.add_argument(
+            "--min-x", help="Minimum value on the x axis", type=float, default=None)
+        parser.add_argument(
+            "--max-x", help="Maximum value on the x axis", type=float, default=None)
+        parser.add_argument(
+            "--min-y", help="Minimum value on the y axis", type=float, default=None)
+        parser.add_argument(
+            "--max-y", help="Maximum value on the y axis", type=float, default=None)
+
         self.add_variable_option(parser, 'grid', self.arg_defaults['grid'], 'the grid')
         # Output Options
         parser.add_argument('-q', '--quiet', help='Do not display a graph. When envoked with -q, the \
@@ -107,6 +116,16 @@ class CLIGraph(object):
         """
         if cli_args.grid:
             axes.grid()
+
+        if args.min_x is not None:
+            ax.set_xlim(left=args.min_x)
+        if args.max_x is not None:
+            ax.set_xlim(right=args.max_x)
+
+        if args.min_y is not None:
+            ax.set_ylim(bottom=args.min_y)
+        if args.max_y is not None:
+            ax.set_ylim(top=args.max_y)
 
     def create_figure(self, cli_args):
         """
