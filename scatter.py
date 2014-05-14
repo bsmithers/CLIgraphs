@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 
-import argparse
 import sys
 
 import cligraph
@@ -31,12 +30,15 @@ class scatter(cligraph.CLIgraph):
 
         axes[0].scatter(x_data, y_data)
 
+    def get_parser(self):
+        parser = super(scatter, self).get_parser()
+        parser.add_argument('--scatter-specific')
+        return parser
+
 if __name__ == '__main__':
 
     s = scatter(grid_default_on=True)
 
-    parser = argparse.ArgumentParser(parents=[s.get_parent_parser()])
-    parser.add_argument('--scatter-specific')
+    parser = s.get_parser()
     args, inputs = parser.parse_known_args()
-
     s.graphify(args, inputs)

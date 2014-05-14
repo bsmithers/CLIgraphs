@@ -21,11 +21,12 @@ class CLIgraph(object):
         self.gs_bottom = self.gs_left = 0
         self.gs_top = self.gs_right = 1
 
-    def get_parent_parser(self):
+    def get_parser(self):
         """
-        Return the base parser used to set standard image attributes
+        Return an ArgumentParser. Chilrdren should override this method
+        and call super() before adding their own options
         """
-        parser = argparse.ArgumentParser(add_help=False)
+        parser = argparse.ArgumentParser()
 
         # Figure Options
         parser.add_argument("-t", "--title", help="Image title", default="")
