@@ -6,10 +6,10 @@ graphs with subplots using gridspec
 import matplotlib
 import matplotlib.gridspec as gridspec
 
-from cligraph import CLIgraph
+from cligraph import CLIGraph
 
 
-class MultiGraph(CLIgraph):
+class MultiGraph(CLIGraph):
 
     def __init__(self, num_plots_x, num_plots_y, **kwargs):
         super(MultiGraph, self).__init__(**kwargs)

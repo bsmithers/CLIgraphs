@@ -6,10 +6,10 @@ import cligraph
 import utils
 
 
-class scatter(cligraph.CLIgraph):
+class Scatter(cligraph.CLIGraph):
 
     def __init__(self, **kwargs):
-        super(scatter, self).__init__(**kwargs)
+        super(Scatter, self).__init__(**kwargs)
 
     def process_input(self, axes, cli_args, inputs):
         """
@@ -28,16 +28,16 @@ class scatter(cligraph.CLIgraph):
             x_data.append(x)
             y_data.append(y)
 
-        axes[0].scatter(x_data, y_data)
+        axes.scatter(x_data, y_data)
 
     def get_parser(self):
-        parser = super(scatter, self).get_parser()
+        parser = super(Scatter, self).get_parser()
         parser.add_argument('--scatter-specific')
         return parser
 
 if __name__ == '__main__':
 
-    s = scatter(grid_default_on=True)
+    s = Scatter(grid_default_on=True)
 
     parser = s.get_parser()
     args, inputs = parser.parse_known_args()

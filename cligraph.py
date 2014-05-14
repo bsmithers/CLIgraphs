@@ -8,7 +8,7 @@ import sys
 import utils
 
 
-class CLIgraph(object):
+class CLIGraph(object):
 
     def __init__(self, **kwargs):
         self.min_inputs = kwargs.get('min_inputs', 0)
@@ -87,9 +87,14 @@ class CLIgraph(object):
         Apply formatting steps, titles, lables, legends etc
         """
         self.apply_lables_and_titles(fig, axes, cli_args)
+        self.format_axes(axes, cli_args)
 
+    def format_axes(self, axes, cli_args):
+        """
+        Apply formatting to the axes""
+        """
         if cli_args.grid:
-            map(lambda ax: ax.grid(), axes)
+            axes.grid()
 
     def create_figure(self, cli_args):
         """
@@ -107,12 +112,13 @@ class CLIgraph(object):
 
     def create_axes(self, fig, cli_args):
         """
-        Create the axes for this graph. Axes are generated using a gridspec
-        to support multiple plots
+        Create the axes for this graph. Although this baseclass creates
+        a single subplot, grid_spec is still used for the custom tight_layout
         """
 
-        self.grid_spec = gridspec.GridSpec(self.num_plots_x, self.num_plots_y)
+        self.grid_spec = gridspec.GridSpec(1, 1)
         axes = [fig.add_subplot(sp) for sp in self.grid_spec]
+        axes = axes[0]
 
         return axes
 
@@ -130,27 +136,9 @@ class CLIgraph(object):
         title, x_label, y_label = map(lambda s: s.decode('string_escape'), [
                                       cli_args.title, cli_args.x_label, cli_args.y_label])
 
-        # When using a single axes, just apply the labels and tittle
-        # but for multiple axes, we make room and apply text(); this keeps things working
-        # with tight layout
-        if len(axes) == 1:
-            axes[0].set_xlabel(x_label)
-            axes[0].set_ylabel(y_label)
-            axes[0].set_title(title)
-        else:
-            if title:
-                self.gs_top -= 0.02
-                self.plt.suptitle(title)
-
-            if x_label:
-                # Ajust rather than set, children can then make space for other graphics
-                self.gs_bottom += 0.02
-                fig.text(0.5, self.gs_bottom, cli_args.x_label, ha='center', va='center')
-
-            if y_label:
-                self.gs_left += 0.02
-                fig.text(self.gs_left, 0.5, cli_args.y_label,
-                         ha='center', va='center', rotation='vertical')
+        axes.set_xlabel(x_label)
+        axes.set_ylabel(y_label)
+        axes.set_title(title)
 
     def finalise(self, fig, cli_args):
         """
