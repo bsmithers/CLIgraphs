@@ -1,5 +1,6 @@
-import stat
+import itertools
 import os
+import stat
 import sys
 
 
@@ -41,3 +42,17 @@ class TransparentLineReader:
         if self.do_close and self.open:
             self.handle.close()
         self.open = False
+
+
+def map_csv_to_cycle(arg, f, sep=','):
+    """
+    Map the supplied argument to a cycle, by splitting by sep and
+    applying the function f
+    """
+    values = arg.split(sep)
+    try:
+        values = map(f, values)
+    except ValueError as e:
+        print >> sys.stderr, e
+        return False
+    return itertools.cycle(values)
