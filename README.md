@@ -17,5 +17,6 @@ scatter.py <(grep 'setosa' examples/iris.tsv) \
 <(grep 'virginica' examples/iris.tsv) \
 --legend 'Setosa,Versicolor,Virginica' \
 --point-size 60,25,25 \
---alpha 0.8
+--alpha 0.8 \
+--stats-title
 ```
