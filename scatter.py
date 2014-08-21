@@ -86,13 +86,13 @@ class Scatter(cligraph.CLIGraph):
             stats_id = scatter.get_label()
             if not stats_id:
                 stats_id = str(inp_index)
-            self.calc_and_show_stats(stats_id)
+            self.calc_and_show_stats(cli_args, stats_id)
 
         if self.annotate_col:
             for i, annotation in enumerate(self.annotate_data):
                 axes.annotate(annotation, (self.x_data[i], self.y_data[i]))
 
-    def calc_and_show_stats(self, stats_id):
+    def calc_and_show_stats(self, cli_args, stats_id):
         spearmanr, spearmanp = scipy.stats.spearmanr(self.x_data, self.y_data)
         pearsonr, pearsonp = scipy.stats.pearsonr(self.x_data, self.y_data)
 
@@ -110,7 +110,7 @@ class Scatter(cligraph.CLIGraph):
             else:
                 stats_id += ". "
 
-            cli_args. title += '%sSpearman: (%.2f, %.2g); Pearson: (%.2f, %.2g)' % (
+            cli_args.title += '%sSpearman: (%.2f, %.2g); Pearson: (%.2f, %.2g)' % (
                 stats_id, spearmanr, spearmanp, pearsonr, pearsonp)
 
     def process_input_by_fields(self, axes, cli_args, inp, inp_index, fields):
