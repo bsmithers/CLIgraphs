@@ -56,3 +56,33 @@ def map_csv_to_cycle(arg, f, sep=','):
         print >> sys.stderr, e
         return False
     return itertools.cycle(values)
+
+
+def get_columns_from_string(column_string):
+    """
+    Takes a unix cut-like format for columns, returning a list
+    of integers suitable for indexing into a list of fields (i.e. 0-based)
+    """
+    columns = []
+    if column_string is None:
+        return columns
+
+    list_pieces = column_string.strip().split(',')
+    list_pieces = map(lambda x: x.strip(), list_pieces)
+
+    try:
+        for list_piece in list_pieces:
+            range_pieces = list_piece.split('-')
+            if len(range_pieces) > 2:
+                print >>sys.stderr, "Malformated column range"
+                sys.exit()
+
+            if len(range_pieces) == 1:
+                columns.append(int(range_pieces[0]))
+            else:
+                columns.extend(range(int(range_pieces[0]), int(range_pieces[1]) + 1))
+    except ValueError as e:
+        print >> sys.stderr, e
+        return []
+
+    return map(lambda c: c-1, columns)

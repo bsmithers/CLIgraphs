@@ -1,7 +1,7 @@
 CLIgraphs
 =========
 
-Easy generation of Python/Matplotlib graphs from the command line.
+Easy generation of Python/Matplotlib graphs from the command line. Very much work in progress.
 
 ## Examples
 
