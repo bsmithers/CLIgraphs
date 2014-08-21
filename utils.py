@@ -2,6 +2,7 @@ import stat
 import os
 import sys
 
+
 class TransparentLineReader:
     """
     Very simple class that facilitates reading from an already opened
@@ -15,19 +16,19 @@ class TransparentLineReader:
         self.fd = None
         self.handle = None
         self.open = True
-        
+
         if isinstance(filename, file):
             self.handle = filename
-            self.do_close = False # Don't close something if it wasn't opened by us
+            self.do_close = False  # Don't close something if it wasn't opened by us
         elif stat.S_ISFIFO(os.stat(filename).st_mode):
             self.fd = os.open(filename, os.O_RDONLY)
             self.handle = os.fdopen(self.fd, 'r')
         else:
             self.handle = open(filename, 'r')
-            
+
     def __iter__(self):
         return self
-    
+
     def next(self):
         line = self.handle.readline()
         if line == "":
@@ -35,7 +36,7 @@ class TransparentLineReader:
             raise StopIteration
         else:
             return line
-    
+
     def close(self):
         if self.do_close and self.open:
             self.handle.close()
