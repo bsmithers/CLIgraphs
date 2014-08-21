@@ -6,7 +6,9 @@ Easy generation of Python/Matplotlib graphs from the command line.
 ## Examples
 
 A simple scatter plot of length vs width:
-`scatter.py examples/iris.tsv --x-label 'Sepal length' --y-label 'Sepal width'`
+```
+scatter.py examples/iris.tsv --x-label 'Sepal length' --y-label 'Sepal width'
+```
 
 Multiple datasets (psst, named pipes just work too):
 ```
