@@ -15,7 +15,9 @@ class CLIGraph(object):
         self.max_inputs = kwargs.get('max_inputs', -1)
         self.num_plots_x = kwargs.get('num_plots_x', 1)
         self.num_plots_y = kwargs.get('num_plots_y', 1)
-        self.allow_stdin = kwargs.get('allow_stdin', True)
+
+        # Default to allow stdin, unless max_inputs has been set to 0
+        self.allow_stdin = kwargs.get('allow_stdin', self.max_inputs != 0)
 
         # Is there a better way to do this? Subclasses may also want this kind of
         # functionality and it could rapidly get unweidly.
@@ -83,10 +85,10 @@ class CLIGraph(object):
         """
         Check the arguments make sense
         """
-        if not self.min_inputs <= len(inputs) or (
-                self.max_inputs > -1 and len(inputs) <= self.max_inputs):
-            print >> sys.stderr, 'The expected number of inputs is between %d and %d' % (
-                self.min_inputs, self.max_inputs)
+        if len(inputs) < self.min_inputs  or (
+                self.max_inputs > -1 and len(inputs) > self.max_inputs):
+            print >> sys.stderr, 'The expected number of inputs is between %d and %d. Number of inputs given: %d' % (
+                self.min_inputs, self.max_inputs, len(inputs))
             return False
 
         if cli_args.quiet and not cli_args.save:
