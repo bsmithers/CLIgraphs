@@ -85,10 +85,10 @@ class CLIGraph(object):
         """
         Check the arguments make sense
         """
-        if len(inputs) < self.min_inputs  or (
+        if len(inputs) < self.min_inputs or (
                 self.max_inputs > -1 and len(inputs) > self.max_inputs):
-            print >> sys.stderr, 'The expected number of inputs is between %d and %d. Number of inputs given: %d' % (
-                self.min_inputs, self.max_inputs, len(inputs))
+            print >> sys.stderr, 'The expected number of inputs is between %d and %d. Number of \
+            inputs given: %d' % (self.min_inputs, self.max_inputs, len(inputs))
             return False
 
         if cli_args.quiet and not cli_args.save:
