@@ -95,6 +95,10 @@ class CLIGraph(object):
             print >> sys.stderr, 'Running in quiet mode and no save desination was provided!'
             return False
 
+        # Decode string separator if it exists, to handle special chars such as tab
+        if cli_args.separator:
+            cli_args.separator = cli_args.separator.decode('string_escape')
+
         self.num_inputs = len(inputs)
         return True
 
