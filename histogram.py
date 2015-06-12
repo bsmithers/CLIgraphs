@@ -32,8 +32,11 @@ class Histogram(cligraph.CLIGraph):
         super(Histogram, self).check_args(cli_args, inputs)
 
         self.fields = utils.get_columns_from_string(cli_args.field)
-        self.colours = itertools.cycle(cli_args.colours)
+        self.colours = itertools.cycle(cli_args.colours.split(','))
+        self.markers = itertools.cycle(cli_args.markers)
+
         self.alphas = utils.map_csv_to_cycle(cli_args.alpha, float)
+        self.histtypes = itertools.cycle(cli_args.hist_type.split(','))
 
         if cli_args.legends:
             self.legends = itertools.cycle(cli_args.legends)
@@ -79,8 +82,10 @@ class Histogram(cligraph.CLIGraph):
                             action="store_true", default=False)
 
         # Visual
-        parser.add_argument('-c', '--colours', default='rgbcymk')
+        parser.add_argument('-c', '--colours', default='r,g,b,c,y,m,k')
+        parser.add_argument('-m', '--markers', default=' ')
         parser.add_argument('-a', '--alpha', default='0.5')
+        parser.add_argument('-y', '--hist-type', default='bar')
 
         return parser
 
@@ -148,10 +153,10 @@ class Histogram(cligraph.CLIGraph):
 
         for index, dataset in enumerate(self.data):
             bins = self.__get_bins(cli_args, index)
-            print bins[0:20]
             axes.hist(dataset, bins, facecolor=self.colours.next(), alpha=self.alphas.next(),
                       normed=cli_args.normed, cumulative=cli_args.cumulative,
-                      log=cli_args.logscale, label=self.legends.next())
+                      log=cli_args.logscale, label=self.legends.next(), hatch=self.markers.next(),
+                      histtype=self.histtypes.next())
 
     def __get_bins(self, cli_args, index):
         """

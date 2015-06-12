@@ -51,6 +51,10 @@ class CLIGraph(object):
         parser.add_argument("--square", help="Force square axis limits",
                             action="store_true", default=False)
 
+        parser.add_argument('--label-fontsize', help="X and Y label fontsizes in points", type=int)
+        parser.add_argument('--x-label-fontsize', help="X label fontsizes in points", type=int)
+        parser.add_argument('--y-label-fontsize', help="Y label fontsizes in points", type=int)
+
         self.add_variable_option(parser, 'grid', self.arg_defaults['grid'], 'the grid')
         # Output Options
         parser.add_argument('-q', '--quiet', help='Do not display a graph. When envoked with -q, the \
@@ -98,6 +102,11 @@ class CLIGraph(object):
         # Decode string separator if it exists, to handle special chars such as tab
         if cli_args.separator:
             cli_args.separator = cli_args.separator.decode('string_escape')
+
+        # Overwrite args where a parent argument exists
+        if cli_args.label_fontsize:
+            cli_args.x_label_fontsize = cli_args.label_fontsize
+            cli_args.y_label_fontsize = cli_args.label_fontsize
 
         self.num_inputs = len(inputs)
         return True
@@ -242,8 +251,8 @@ class CLIGraph(object):
         title, x_label, y_label = map(lambda s: s.decode('string_escape'), [
                                       cli_args.title, cli_args.x_label, cli_args.y_label])
 
-        axes.set_xlabel(x_label)
-        axes.set_ylabel(y_label)
+        axes.set_xlabel(x_label, fontsize=cli_args.x_label_fontsize)
+        axes.set_ylabel(y_label, fontsize=cli_args.y_label_fontsize)
         axes.set_title(title)
 
     def finalise(self, fig, cli_args):
