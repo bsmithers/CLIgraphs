@@ -89,12 +89,12 @@ class MultiGraph(CLIGraph):
         if x_label:
             # Ajust rather than set, children can then make space for other graphics
             self.gs_bottom += 0.02
-            fig.text(0.5, self.gs_bottom, cli_args.x_label, ha='center', va='center')
+            fig.text(0.5, self.gs_bottom, cli_args.x_label, ha='center', va='center', fontsize=cli_args.x_label_fontsize)
 
         if y_label:
             self.gs_left += 0.02
             fig.text(self.gs_left, 0.5, cli_args.y_label,
-                     ha='center', va='center', rotation='vertical')
+                     ha='center', va='center', rotation='vertical', fontsize=cli_args.y_label_fontsize)
 
     def finalise(self, fig, cli_args):
         """
